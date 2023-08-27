@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>DDNS-FAST</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+  <legend>DDNS-FAST</legend>
+</fieldset>
+
+<div class="layui-tab" lay-filter="tab_view">
+  <ul class="layui-tab-title">
+    <li class="layui-this">密码管理</li>
+    <li>认证key设置</li>
+    <li>解析记录管理</li>
+    <li>定时任务管理</li>
+  </ul>
+  <div class="layui-tab-content">
+
+    <div class="layui-tab-item layui-show">
+      <form class="layui-form" lay-filter="from4" action="">
+        <div class="layui-form-item">
+          <label class="layui-form-label">dns解析IP: </label>
+          <div class="layui-input-inline">
+            <input type="text" name="ip" disabled class="layui-input layui-disabled">
+          </div>
+          <div class="layui-form-mid layui-word-aux">此处展示已经同步成功的IP</div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">密码设置</label>
+          <div class="layui-input-inline">
+            <input type="password" name="password" required  lay-verify="required" placeholder="请设置密码" autocomplete="off" class="layui-input">
+          </div>
+          <div class="layui-form-mid layui-word-aux">初次登录请重新设置密码,如果忘记密码重新启动服务可重置密码</div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo4">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="layui-tab-item">
+      <form class="layui-form" lay-filter="from1" action="">
+        <div class="layui-form-item">
+          <label class="layui-form-label">平台选择</label>
+          <div class="layui-input-inline">
+            <select name="platform" lay-verify="required">
+              <option value=""></option>
+              <option value="ali">阿里云</option>
+              <option value="baidu">百度云（可用性待验证）</option>
+              <option value="tencent">腾讯云（可用性待验证）</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">accessKey</label>
+          <div class="layui-input-inline">
+            <input type="text" name="accessKey" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">accessKeySecret</label>
+          <div class="layui-input-inline">
+            <input type="text" name="accessKeySecret" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="layui-tab-item">
+      <form class="layui-form" lay-filter="from2" action="">
+        <div class="layui-form-item">
+          <label class="layui-form-label">domain(域名)</label>
+          <div class="layui-input-inline">
+            <input type="text" name="domain" required  lay-verify="required" placeholder="请输入域名" autocomplete="off" class="layui-input">
+          </div>
+          <div class="layui-form-mid layui-word-aux">示例：exmaple.com</div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">rr(主机记录)</label>
+          <div class="layui-input-inline">
+            <input type="text" name="rr" required  lay-verify="required" placeholder="请输入主机记录" autocomplete="off" class="layui-input">
+          </div>
+          <div class="layui-form-mid layui-word-aux">如果要解析@.exmaple.com，主机记录要填写”@”，而不是空。</div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">解析记录类型</label>
+          <div class="layui-input-inline">
+            <select name="type" lay-verify="required">
+              <option value=""></option>
+              <option value="A">A(IPv4)</option>
+              <option value="AAAA">AAAA(IPv6)</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo2">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="layui-tab-item">
+      <form class="layui-form" lay-filter="from3" action="">
+        <div class="layui-form-item">
+          <!--<label class="layui-form-label">cron表达式</label>-->
+          <label class="layui-form-label">执行间隔时间(秒)</label>
+          <div class="layui-input-inline">
+            <input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" name="cron" required  lay-verify="required" placeholder="请输入表达式" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo3">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
+<script th:inline="javascript">
+  layui.use(['element','form','jquery','layer'], function(){
+    var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+    var form = layui.form;
+    var layer = layui.layer;
+    $ = layui.jquery;
+
+    //表单赋值
+    echo(form, $);
+
+    //监听导航点击
+    element.on('tab(tab_view)', function(data){
+      echo(form, $);
+      console.log(data.index);
+      /*console.log(this); //当前Tab标题所在的原始DOM元素
+      console.log(data.index); //得到当前Tab的所在下标
+      console.log(data.elem); //得到当前的Tab大容器*/
+    });
+
+    //监听提交
+    form.on('submit(formDemo1)', function(data){
+      /*console.log(data);
+      console.log(JSON.stringify(data.field));*/
+
+      $.ajax({
+        url: "/setConfig",
+        data: data.field,
+        type: "get",
+        /*dataType:"json",*/
+        headers : {/*'Content-Type' : 'application/json;charset=utf-8'*/}, //接口json格式
+        success: function (data) {
+          layer.msg(data.msg);
+        },
+        error: function (data) {
+        }
+      });
+
+      return false;
+    });
+    form.on('submit(formDemo2)', function(data){
+      /*console.log(data);
+      console.log(JSON.stringify(data.field));*/
+
+      $.ajax({
+        url: "/add",
+        data: data.field,
+        type: "get",
+        /*dataType:"json",*/
+        headers : {/*'Content-Type' : 'application/json;charset=utf-8'*/}, //接口json格式
+        success: function (data) {
+          layer.msg(data.msg);
+        },
+        error: function (data) {
+        }
+      });
+
+      return false;
+    });
+    form.on('submit(formDemo3)', function(data){
+      /*console.log(data);
+      console.log(JSON.stringify(data.field));*/
+
+      $.ajax({
+        url: "/setCron",
+        data: data.field,
+        type: "get",
+        /*dataType:"json",*/
+        headers : {/*'Content-Type' : 'application/json;charset=utf-8'*/}, //接口json格式
+        success: function (data) {
+          layer.msg(data.msg);
+
+        },
+        error: function (data) {
+        }
+      });
+
+      return false;
+    });
+
+    form.on('submit(formDemo4)', function(data){
+      $.ajax({
+        url: "/setPassword",
+        data: data.field,
+        type: "get",
+        /*dataType:"json",*/
+        headers : {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'},
+        success: function (data) {
+          layer.msg(data.msg);
+        },
+        error: function (data) {
+        }
+      });
+
+      return false;
+    });
+
+  });
+
+  function echo(form, $) {
+
+    $.ajax({
+      url: "/getData",
+      data: {},
+      type: "get",
+      /*dataType:"json",*/
+      headers : {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'},
+      success: function (data) {
+        let result = data.data;
+        //console.log(result);
+        form.val("from1", {
+          "platform": result.platform
+          ,"accessKey": result.accessKey
+          ,"accessKeySecret": result.accessKeySecret
+        });
+        form.render(null, 'from1');
+        form.val("from2", {
+          "domain": result.domain
+          ,"rr": result.rr
+          ,"type": result.type
+        });
+        form.render(null, 'from2');
+        form.val("from3", {
+          "cron": result.cron
+        });
+        form.render(null, 'from3');
+
+        form.val("from4", {
+          "ip": result.value
+        });
+        form.render(null, 'from4');
+      },
+      error: function (data) {
+      }
+    });
+  }
+
+</script>
+
+</body>
+</html>

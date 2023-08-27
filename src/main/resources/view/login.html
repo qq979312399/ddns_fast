@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DDns-fast登录</title>
+
+<meta name="keywords" content="DDns-fast登录"/>
+
+<meta name="description" content="java版DDns"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/component.css}" />
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+</head>
+<body>
+<div class="demo-2">
+	<div class="">
+		<div id="large-header" class="large-header">
+			<canvas id="demo-canvas"></canvas>
+
+		</div>
+	</div>
+</div>
+<div class="container">
+    <div class="login_header">
+    	<span></span>
+    </div>
+
+
+    	<div class="form_header">
+        	<h1 id="logo">Login</h1>
+			<h2 id="subheading">DDns-fast</h2>
+        </div>
+        <div class="signup_forms">
+			<div id="signup_forms_container" class="signup_forms_container">
+				<form class="signup_form_form" id="sign_form" action="">
+					<div class="signup_account" id="signup_account">
+						<div class="form_user"><input type="text" name="email" placeholder="Email" id="signup_email"></div>
+						<div class="form_password"><input type="password" name="password" placeholder="Password" id="signup_password"></div>
+					</div>
+
+					<button type="button" id="signup_forms_submit"><span><strong>Log in</strong></span></button>
+
+				</form>
+
+			</div>
+
+          </div>
+    <div class="footer">
+        <div class="design_show">
+        	<div class="designer_info">
+					<a href="https://github.com/qq979312399/ddns_fast" target="_blank">
+					Designed by Class 2 Software 11 <strong style="font-family:'微软雅黑'">GitHub</strong></a>
+               <!-- <a href="#" target="_blank" class="face"><img id="face" src="images/face.jpg"  alt="designed by RayZhang"/></a>-->
+            </div>
+        </div>
+    </div>
+</div>
+	<script th:src="@{/js/login.js}"></script>
+	<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+	<script th:inline="javascript">
+		layui.use(['element','form','jquery','layer'], function(){
+			$ = layui.jquery;
+
+			$(document).on('click',"#signup_forms_submit",function(){
+				$.ajax({
+					url: "/myLogin",
+					data: {
+						account:$("#signup_email").val(),
+						password:$("#signup_password").val()
+					},
+					type: "post",
+					async: false,
+					/*dataType:"json",*/
+					headers : {/*'Content-Type' : 'application/json;charset=utf-8'*/}, //接口json格式
+					success: function (data) {
+						if (!!data.data) {
+							window.location.replace("/");
+						} else {
+							layer.msg(data.msg);
+						}
+						//window.location = "/";
+					},
+					error: function (data) {
+						layer.msg("网络异常");
+					}
+				});
+			});
+
+		});
+	</script>
+
+</body>
+</html>
